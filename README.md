@@ -1,16 +1,27 @@
-# string_calculator
+# 🧮 String Calculator – TDD Kata
 
-A new Flutter project.
+This project is a Flutter-based implementation of the classic **String Calculator Kata** using **Test-Driven Development (TDD)** and **Bloc** state management.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🔧 Features Implemented
 
-A few resources to get you started if this is your first Flutter project:
+- ✅ Returns 0 for empty input
+- ✅ Returns a single number as integer
+- ✅ Handles comma `,` and newline `\n` delimiters
+- ✅ Supports custom delimiters (e.g., `//;\n1;2`)
+- ✅ Accepts unlimited numbers
+- ✅ Throws `FormatException` for negative numbers
+- ✅ Lists all negative numbers in the error message
+- ✅ Ignores non-numeric characters
+- ✅ Bloc + Snackbar to show result or error
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🚀 How to Run
+
+```bash
+git clone https://github.com/Pavithran-python/String-Calculator.git
+cd String-Calculator
+flutter pub get
+flutter run or flutter test --reporter expanded
