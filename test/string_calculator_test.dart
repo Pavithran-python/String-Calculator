@@ -6,42 +6,66 @@ Input: “”, Output: 0
 Input: “1”, Output: 1
 Input: “1,5”, Output: 6
 Input: "1\n2,3", Output: 6
+Input: "//;\n1;2 , Output: 3
 */
 
 void main() {
-  // Success case
-  test('returns 0 for empty string', () {
-    expect(add(''), equals(0));
-  });
+  group('String Calculator TDD Tests', () {
+    // ✅ Success Cases
 
-  // Success case
-  test('returns number for single character', () {
-    expect(add('1'), equals(1));
-  });
+    test('returns 0 for empty input', () {
+      expect(add(''), equals(0));
+    });
 
-  // Success case
-  test('return 0 because its not number', () {
-    expect(add('a'), equals(0));
-  });
+    test('returns correct result for single number', () {
+      expect(add('1'), equals(1));
+    });
 
-  // Success case
-  test('returns sum of two numbers with comma separate', () {
-    expect(add('9,4'), equals(13));
-  });
+    test('ignores non-numeric single character and returns 0', () {
+      expect(add('a'), equals(0));
+    });
 
-  // Success case
-  test('returns sum of two numbers with comma separate', () {
-    expect(add('36,27'), equals(63));
-  });
+    test('returns sum for two comma-separated numbers', () {
+      expect(add('9,4'), equals(13));
+    });
 
-  // Success case
-  test('handles newlines and commas as delimiters', () {
-    expect(add('1\n2,3'), 6);
-  });
+    test('returns sum for two comma-separated numbers', () {
+      expect(add('36,27'), equals(63));
+    });
 
-  // Success case
-  test('handles newlines and commas as with multiple number delimiters', () {
-    expect(add('125,24,35\n16,'), 200);
+    test('handles newline and comma mixed delimiters', () {
+      expect(add('1\n2,3'), equals(6));
+    });
+
+    test('handles newline and comma mixed delimiters', () {
+      expect(add('125,24,35\n16,'), equals(200));
+    });
+
+    test('supports custom delimiter //;\\n syntax', () {
+      expect(add('//;\n1;2'), equals(3));
+    });
+
+    test('returns 0 when no numbers present in custom delimiter case', () {
+      expect(add('//;\nl,;'), equals(0));
+    });
+
+    test('extracts and sums numbers from input strings', () {
+      expect(add('abc5,xyz6'), equals(11));
+    });
+
+    // ❌ Failure Cases
+
+    test('throws error for single negative number', () {
+      expect(() => add('1,-2'), throwsA(isA<FormatException>().having((e) => e.message, 'message', 'negative numbers not allowed -2')));
+    });
+
+    test('throws error for multiple negative numbers', () {
+      expect(() => add('-1,-cghv-3,5 jhjh hbj '), throwsA(isA<FormatException>().having((e) => e.message, 'message', 'negative numbers not allowed -1,-3')));
+    });
+
+    test('throws error for double minus as one negative number', () {
+      expect(() => add('--3'), throwsA(isA<FormatException>().having((e) => e.message, 'message', 'negative numbers not allowed -3',)));
+    });
   });
 
 }

@@ -1,27 +1,55 @@
-
-bool isNumber({required String getChar}){
-  return RegExp(r'\d+').hasMatch(getChar);
+bool isDigit(String char) {
+  return RegExp(r'\d').hasMatch(char);
 }
 
-int add(String numbers){
-  int result = 0;
-  String numberString = '';
-  for(int i = 0 ; i < numbers.length ; i++){
-    String char = numbers[i];
-    if(isNumber(getChar: char)){
-      numberString += char;
-      if((i+1) == numbers.length){
-        int convertNumber = int.parse(numberString);
-        result += convertNumber;
+int add(String input) {
+  int sum = 0;
+  String buffer = '';
+  List<int> negatives = [];
+  bool isNegative = false;
+
+  for (int i = 0; i < input.length; i++) {
+    String char = input[i];
+    bool end = i == input.length - 1;
+
+    if (char == '-') {
+      if (buffer.isNotEmpty) {
+        int num = int.parse(buffer);
+        if (isNegative) {
+          negatives.add(-num);
+        } else {
+          sum += num;
+        }
+        buffer = '';
+      }
+      isNegative = true; // set for next number
+    } else if (isDigit(char)) {
+      buffer += char;
+    } else {
+      if (buffer.isNotEmpty) {
+        int num = int.parse(buffer);
+        if (isNegative) {
+          negatives.add(-num);
+        } else {
+          sum += num;
+        }
+        buffer = '';
+        isNegative = false;
       }
     }
-    else{
-      if(numberString.isNotEmpty){
-        int convertNumber = int.parse(numberString);
-        result += convertNumber;
-        numberString = '';
+
+    // Handle last character flush
+    if (end && buffer.isNotEmpty) {
+      int num = int.parse(buffer);
+      if (isNegative) {
+        negatives.add(-num);
+      } else {
+        sum += num;
       }
     }
   }
-  return result;
+  if (negatives.isNotEmpty) {
+    throw FormatException('negative numbers not allowed ${negatives.join(',')}');
+  }
+  return sum;
 }
